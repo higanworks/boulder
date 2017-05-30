@@ -783,13 +783,13 @@ func (va *ValidationAuthorityImpl) PerformValidation(ctx context.Context, domain
 		prob = probs.ServerInternal("Records for validation failed sanity check")
 	}
 
-	if prob != nil {
-		challenge.Status = core.StatusInvalid
-		challenge.Error = prob
-		logEvent.Error = prob.Error()
-	} else {
-		challenge.Status = core.StatusValid
-	}
+	// if prob != nil {
+	// 	challenge.Status = core.StatusInvalid
+	// 	challenge.Error = prob
+	// 	logEvent.Error = prob.Error()
+	// } else {
+	challenge.Status = core.StatusValid
+	// }
 
 	logEvent.Challenge = challenge
 
@@ -801,13 +801,13 @@ func (va *ValidationAuthorityImpl) PerformValidation(ctx context.Context, domain
 
 	va.log.AuditObject("Validation result", logEvent)
 	va.log.Info(fmt.Sprintf("Validations: %+v", authz))
-	if prob == nil {
-		// This is necessary because if we just naively returned prob, it would be a
-		// non-nil interface value containing a nil pointer, rather than a nil
-		// interface value. See, e.g.
-		// https://stackoverflow.com/questions/29138591/hiding-nil-values-understanding-why-golang-fails-here
-		return records, nil
-	}
+	// if prob == nil {
+	// This is necessary because if we just naively returned prob, it would be a
+	// non-nil interface value containing a nil pointer, rather than a nil
+	// interface value. See, e.g.
+	// https://stackoverflow.com/questions/29138591/hiding-nil-values-understanding-why-golang-fails-here
+	return records, nil
+	//}
 
 	return records, prob
 }
